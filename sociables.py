@@ -1,19 +1,25 @@
+def sumatoria_div (n):
+    divisores = 0
+    for x in range (1,(n//2)+1):
+        
+        if (n % x == 0) :
+            divisores = divisores + x
+
+    return divisores
 
 
 def numeros_sociables (N,rango):
     for i in range (2,N):
     
-        divisores = 0
+        
         numeros_act = [] 
         numeros_act.append (i)
 
-        for j in range (1,i):
-            if (i% j == 0) :
-                divisores = divisores + j
-
+        
+        suma = sumatoria_div (i)
         
         
-        numeros_act.append (divisores)
+        numeros_act.append (suma)
         
         veces = 1
 
@@ -40,7 +46,6 @@ rangee = int (input ("Ingrese un orden social: "))
 
 numeros_sociables (n,rangee)
             
-
 
         
         
