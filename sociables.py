@@ -1,54 +1,78 @@
-def sumatoria_div (n):
-    divisores = 1
-    for x in range (2,(n//2)+1):
-        
-        if (n % x == 0) :
-            divisores = divisores + x
-
-    return divisores
-
+def sumatoria_div (n):  #buscar divisores de un numero 
+    suma = 1
+    raiz = int(n ** 0.5)  # Raíz cuadrada para optimizar
+    for x in range(2, raiz + 1):
+        if n % x == 0:
+            complemento = n // x
+            suma += x
+            if complemento != x:
+                suma += complemento
+    return suma
 
 def numeros_sociables (N,rango):
+    conjuntos_encontrados=set ()
+
     for i in range (2,N):
-    
-        secuencia = []
-        numeros_act = set ()
-        numeros_act.add (i)
-        secuencia.append (i)
-
         
-        sumatoria = sumatoria_div (i)
-    
-        numeros_act.add(sumatoria)
-        secuencia.append (sumatoria)
+        encontrado = False
         
-        numero_analizar = sumatoria
-        veces = 1
 
-        print (f"Rango { rango}")
-        while veces <= rango :
+        if len (conjuntos_encontrados) > 0 :
+            for internos in conjuntos_encontrados: #para evitar buscar un conjunto ya encontrado
+                if i in internos: 
+                    encontrado= True
+                    break
+        
+        if  not encontrado:
             
-            divisores_actual = 1
+            secuencia = []
+            conjunto = set ()
+            conjunto.add (i)  #posible conjunto social
+            secuencia.append (i)  #array con numeros
+
+
+
+            sumatoria = sumatoria_div (i)
+        
+            conjunto.add(sumatoria)
+            secuencia.append (sumatoria)
             
-            for k in range (2,( (numero_analizar//2) + 1 )):
+            numero_analizar = sumatoria
+            veces = 1
+
+          
+          
+
+            
+            while veces <= rango :
                 
-                if numero_analizar % k == 0:
-                    divisores_actual = divisores_actual + k
         
-            numeros_act.add (divisores_actual)
-            secuencia.append (divisores_actual)
-            numero_analizar = divisores_actual
-            veces = veces + 1
+                divisores_actual = 1
+                fin = (numero_analizar//2) + 1
+                
+                for k in range (2,fin):
+                    
+                    if numero_analizar % k == 0:
+                        divisores_actual = divisores_actual + k
+            
+                conjunto.add (divisores_actual)
+                secuencia.append (divisores_actual)
+                numero_analizar = divisores_actual
+              
+                veces = veces + 1
+            
 
-        print (secuencia)
-        
-        if secuencia[0] == secuencia[rango-1] and  ( (len (numeros_act)) == rango):
-            print (f"Conjunto social: {numeros_act}")
+            
+            if secuencia[0] == secuencia[rango] and  ( (len (conjunto)) == rango):
+                print (f"*Conjunto social: {secuencia [0:rango]}")
+                conjunto = frozenset (conjunto)
+                conjuntos_encontrados.add (conjunto)
     
         
-n = int (input ("Ingrese un numero: "))
+n = int (input ("Ingrese un numero tope: "))
 rangee = int (input ("Ingrese un orden social: "))
 
+print ("Conjuntos sociales del orden elegido: ")
 numeros_sociables (n,rangee)
             
 
